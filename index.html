@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rily's Cute Farm</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,sans-serif;color:#526044;overflow:hidden}
+button{font:inherit;border:0;cursor:pointer}.sky{position:fixed;inset:0;background:linear-gradient(#8fdcff 0 57%,#bce993 57%);z-index:-5}
+.cloud{position:absolute;width:150px;height:48px;background:#fff9;border-radius:50px;top:12%;left:-180px;animation:cloud 20s linear infinite}.cloud:before,.cloud:after{content:"";position:absolute;background:#fff9;border-radius:50%}.cloud:before{width:65px;height:65px;left:28px;top:-25px}.cloud:after{width:80px;height:80px;right:15px;top:-35px}@keyframes cloud{to{left:110%}}
+.start{height:100vh;display:grid;place-items:center;background:#ffffff18}.card{background:#fffffff0;padding:35px 45px;border-radius:36px;text-align:center;box-shadow:0 18px 50px #557b4c55}.card h1{font-size:clamp(40px,8vw,76px);margin:5px;color:#668d52;text-shadow:3px 4px white}.card p{font-size:19px}.play{padding:15px 60px;border-radius:999px;background:#ff91b8;color:white;font-size:25px;font-weight:800;box-shadow:0 7px #d66d96}.play:active{transform:translateY(5px);box-shadow:0 2px #d66d96}
+.game{display:none;height:100vh}.top{height:70px;background:#fff9;display:flex;align-items:center;justify-content:space-between;padding:10px 16px;position:relative;z-index:10}.pills{display:flex;gap:8px;flex-wrap:wrap}.pill{background:white;padding:8px 13px;border-radius:18px;box-shadow:0 3px 9px #52733a22}.farm{position:absolute;inset:70px 0 0;background:#a8dd84}.ground{position:absolute;left:5%;right:5%;bottom:5%;height:61%;background:#a8754f;border:8px solid #c48b5e;border-radius:35px}.plots{position:absolute;inset:7%;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.plot{background:#835439;border:5px solid #70442e;border-radius:20px;position:relative;overflow:hidden;display:grid;place-items:center}.plant{animation:pop .45s ease;text-align:center}.plant .emoji{display:block;font-size:62px}.plant small{background:#fffdf0;padding:3px 8px;border-radius:10px;font-weight:700}@keyframes pop{from{transform:scale(.5);opacity:.2}to{transform:scale(1);opacity:1}}
+.guide{position:absolute;right:15px;bottom:15px;z-index:20;display:flex;align-items:end;gap:8px}.rily{font-size:92px;filter:drop-shadow(0 5px 4px #52703d55)}.speech{width:270px;background:white;border-radius:24px;padding:12px 15px;box-shadow:0 8px 25px #52703d55}.speech b{color:#dc6e9a}.speech button{background:#94ce76;color:white;padding:7px 15px;border-radius:14px}
+.actions{position:absolute;left:16px;bottom:16px;z-index:20;display:flex;gap:8px;flex-wrap:wrap}.actions button{background:white;padding:10px 14px;border-radius:17px;box-shadow:0 4px 12px #52703d22}
+.modal{position:absolute;inset:0;background:#42603855;display:none;place-items:center;z-index:30}.menu{background:#fffdf5;border-radius:30px;padding:24px;min-width:min(520px,92vw);box-shadow:0 20px 60px #314a2c55}.menu h2{text-align:center;margin-top:0}.choices{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.choice{background:#edf8df;border-radius:20px;padding:15px;text-align:center}.choice span{display:block;font-size:44px}.choice b{display:block}.choice small{display:block;margin:5px}.choice button{background:#ff9abd;color:white;padding:7px 13px;border-radius:13px;font-weight:700}.close{margin-top:15px;background:#ddd;padding:8px 15px;border-radius:14px}
+.toast{position:absolute;top:85px;left:50%;transform:translateX(-50%);background:white;padding:10px 18px;border-radius:20px;opacity:0;transition:.25s;z-index:40}.toast.show{opacity:1}
+@media(max-width:700px){.plots{grid-template-columns:repeat(2,1fr)}.ground{height:60%}.rily{font-size:65px}.speech{width:205px;font-size:12px}.choices{grid-template-columns:repeat(2,1fr)}}
+
+.levels{height:100vh;display:none;place-items:center;background:#ffffff18;padding:20px}
+.level-card{background:#fffffff2;border-radius:36px;padding:30px;max-width:760px;width:94%;text-align:center;box-shadow:0 18px 55px #557b4c55}
+.level-card h1{margin:0;color:#668d52;font-size:48px;text-shadow:2px 3px white}
+.level-deco{font-size:42px}.level-card p{margin:6px 0 20px}
+.level-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+.level-btn{min-height:130px;border-radius:24px;background:#edf8df;color:#526044;box-shadow:0 5px 0 #c5dfae;padding:14px;transition:.15s}
+.level-btn span{display:block;font-size:40px}.level-btn b{display:block;font-size:19px}.level-btn small{display:block;margin-top:4px}
+.level-btn.unlocked:hover{transform:translateY(-3px);background:#fff0f6}.level-btn.locked{opacity:.55;cursor:not-allowed}
+@media(max-width:650px){.level-grid{grid-template-columns:repeat(2,1fr)}.level-card h1{font-size:38px}}
+</style>
+</head>
+<body>
+<div class="sky"><div class="cloud"></div><div class="cloud" style="top:28%;animation-delay:8s;transform:scale(.7)"></div></div>
+<section class="start" id="start"><div class="card"><div style="font-size:55px">🌷🐰🌱</div><h1>Rily's Cute Farm</h1><p>Bangun kebun lucu bersama Rily! ✨</p><button class="play" id="play">PLAY</button></div></section>
+<section class="levels" id="levels">
+  <div class="level-card">
+    <div class="level-deco">🌷 🐰 🌱</div>
+    <h1>Pilih Level</h1>
+    <p>Pilih petualangan kebunmu! ✨</p>
+    <div class="level-grid">
+      <button class="level-btn unlocked" onclick="startLevel(1)"><span>🌱</span><b>Level 1</b><small>First Garden</small></button>
+      <button class="level-btn locked" disabled><span>🔒</span><b>Level 2</b><small>Growing Garden</small></button>
+      <button class="level-btn locked" disabled><span>🔒</span><b>Level 3</b><small>Animal Friends</small></button>
+      <button class="level-btn locked" disabled><span>🔒</span><b>Level 4</b><small>Pretty Farm</small></button>
+      <button class="level-btn locked" disabled><span>🔒</span><b>Level 5</b><small>Dream Farm</small></button>
+    </div>
+  </div>
+</section>
+<section class="game" id="game">
+<header class="top"><div class="pills"><div class="pill">⭐ Level <b id="level">1</b></div><div class="pill">🪙 <b id="coins">40</b></div><div class="pill">🌱 Bibit <b id="seeds">5</b></div></div><button class="pill" id="music">🎵 Musik ON</button></header>
+<div class="farm"><div class="ground"><div class="plots" id="plots"></div></div></div>
+<div class="guide"><div class="speech"><b>Rily 👩‍🌾</b><div id="dialog">Halo! Pilih tanaman yang ingin kamu tanam, ya! 🌷</div><button id="next">Lanjut</button></div><div class="rily">👩🏻‍🌾</div></div>
+<div class="actions" id="actions"><button id="choose">🛒 Pilih Tanaman</button><button id="water">💧 Siram</button><button id="harvest">🧺 Panen</button></div>
+<div class="modal" id="modal"><div class="menu"><h2>🌱 Pilih Bibit</h2><div class="choices" id="choices"></div><button class="close" id="close">Tutup</button></div></div>
+<div class="toast" id="toast"></div>
+</section>
+<script>
+const plants={strawberry:{name:"Strawberry",icon:["🌱","🍃","🌸","🍓"],cost:5,earn:12},apple:{name:"Apel",icon:["🌱","🌿","🌳","🍎"],cost:8,earn:18},corn:{name:"Jagung",icon:["🌱","🌾","🌽","🌽"],cost:6,earn:14}};
+const s={level:1,coins:40,seeds:5,selected:"strawberry",plots:Array(8).fill(null),music:true};let ctx,timer,di=0;
+const $=x=>document.getElementById(x);
+function render(){ $("level").textContent=s.level;$("coins").textContent=s.coins;$("seeds").textContent=s.seeds;$("plots").innerHTML=s.plots.map(p=>p?`<div class="plot"><div class="plant"><span class="emoji">${plants[p.type].icon[p.stage]}</span><small>${plants[p.type].name}</small></div></div>`:'<div class="plot"></div>').join('')}
+function toast(x){$("toast").textContent=x;$("toast").classList.add("show");setTimeout(()=>$("toast").classList.remove("show"),1300)}
+function beep(f=600,d=.12){if(!ctx||!s.music)return;let o=ctx.createOscillator(),g=ctx.createGain();o.frequency.value=f;o.type="triangle";g.gain.value=.035;o.connect(g);g.connect(ctx.destination);o.start();o.stop(ctx.currentTime+d)}
+function tune(){if(!ctx||!s.music)return;[523,659,784,659,587,698].forEach((f,i)=>setTimeout(()=>beep(f,.15),i*190));timer=setTimeout(tune,1200)}
+function openChoices(){ $("choices").innerHTML=Object.entries(plants).map(([k,p])=>`<div class="choice"><span>${p.icon[3]}</span><b>${p.name}</b><small>🪙 ${p.cost} • panen +${p.earn}</small><button onclick="selectPlant('${k}')">Pilih</button></div>`).join('');$("modal").style.display="grid"}
+window.selectPlant=k=>{s.selected=k;$("modal").style.display="none";toast("Dipilih: "+plants[k].name+" "+plants[k].icon[3]);beep(720);render()}
+$("play").onclick=()=>{ctx=new (window.AudioContext||window.webkitAudioContext)();ctx.resume();$("start").style.display="none";$("levels").style.display="grid";tune();beep(784,.25)}
+window.startLevel=function(n){s.level=n;$("levels").style.display="none";$("game").style.display="block";render();$("dialog").textContent="Halo! Selamat datang di Level "+n+"! Pilih tanaman yang mau kamu tanam. 🌱";beep(880,.2)}
+$("music").onclick=()=>{s.music=!s.music;$("music").textContent=s.music?"🎵 Musik ON":"🔇 Musik OFF";if(s.music)tune()}
+$("choose").onclick=openChoices;$("close").onclick=()=>$("modal").style.display="none";
+$("next").onclick=()=>{let d=["Halo! Pilih tanaman yang ingin kamu tanam, ya! 🌷","Setelah ditanam, siram sampai tumbuh besar. 💧","Tanamanmu akan berkembang dari bibit sampai menghasilkan buah atau sayuran! 🍓","Kalau sudah matang, panen dan kumpulkan koin. 🪙","Naik level untuk membuat farm-mu semakin seru! ⭐"];di=(di+1)%d.length;$("dialog").textContent=d[di];beep(700)}
+$("choose").title="Pilih jenis tanaman dulu sebelum menanam";
+document.addEventListener("click",e=>{if(e.target.id==="plant"){}});
+$("water").onclick=()=>{let i=s.plots.findIndex(p=>p&&p.stage<3);if(i<0)return toast("Belum ada tanaman yang perlu disiram 🌱");s.plots[i].stage++;beep(640);toast(s.plots[i].stage===3?"Tanaman siap dipanen! 🎉":"Tanaman tumbuh! 🌿");render()}
+$("harvest").onclick=()=>{let i=s.plots.findIndex(p=>p&&p.stage===3);if(i<0)return toast("Belum ada buah/sayur matang 🍓");let p=s.plots[i], gain=plants[p.type].earn;s.coins+=gain;s.seeds++;s.plots[i]=null;s.level=Math.min(10,1+Math.floor(s.coins/35));beep(900,.2);toast("Panen "+plants[p.type].name+"! +"+gain+" 🪙");render()}
+const oldChoose=$("choose").onclick; // planting action is added below
+$("choose").onclick=()=>openChoices();
+const plantBtn=document.createElement("button");plantBtn.textContent="🌱 Tanam";plantBtn.onclick=()=>{let i=s.plots.findIndex(x=>!x);if(i<0)return toast("Semua petak penuh 🌷");if(!s.seeds)return toast("Bibit habis!");s.plots[i]={type:s.selected,stage:0};s.seeds--;beep(520);toast("Menanam "+plants[s.selected].name+"! 🌱");render()};$("actions").appendChild(plantBtn);
+render();
+</script>
+</body></html>
