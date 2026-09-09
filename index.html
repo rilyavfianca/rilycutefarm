@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="id">
 <head>
+  <link rel="stylesheet" href="https://silverhawk.web.id/lock/lock.css">
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Rily's Cute Farm</title>
 <style>
@@ -27,6 +28,7 @@ button{font:inherit;border:0;cursor:pointer}.sky{position:fixed;inset:0;backgrou
 </style>
 </head>
 <body>
+  <body data-shlock-mode="ultimate" data-shlock-domain="" data-shlock-brand="rily'scutefarm" data-shlock-social="https://dai.ly/xauyvna">
 <div class="sky"><div class="cloud"></div><div class="cloud" style="top:28%;animation-delay:8s;transform:scale(.7)"></div></div>
 <section class="start" id="start"><div class="card"><div style="font-size:55px">🌷🐰🌱</div><h1>Rily's Cute Farm</h1><p>Bangun kebun lucu bersama Rily! ✨</p><button class="play" id="play">PLAY</button></div></section>
 <section class="levels" id="levels">
@@ -75,4 +77,6 @@ $("choose").onclick=()=>openChoices();
 const plantBtn=document.createElement("button");plantBtn.textContent="🌱 Tanam";plantBtn.onclick=()=>{let i=s.plots.findIndex(x=>!x);if(i<0)return toast("Semua petak penuh 🌷");if(!s.seeds)return toast("Bibit habis!");s.plots[i]={type:s.selected,stage:0};s.seeds--;beep(520);toast("Menanam "+plants[s.selected].name+"! 🌱");render()};$("actions").appendChild(plantBtn);
 render();
 </script>
-</body></html>
+</body>
+  <script src="https://silverhawk.web.id/lock/lock.js"></script>
+</html>
